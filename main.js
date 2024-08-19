@@ -24,6 +24,7 @@ function updateDate() {
   );
   $mainDateDays.textContent = calcDays[dayOfWeek];
   $mainDateYearMonthDay.textContent = yearMonthDay;
+  console.log("hello");
 }
 updateDate();
 setInterval(updateDate, 1000); // 1초 마다 날짜를 업데이트함
@@ -44,13 +45,13 @@ $inputAddButton.addEventListener("click", () => {
   newTodoItem.childNodes[3].innerText = text; // 복사한 "todo-item"태그에 text를 교체하여 삽입
   newTodoItem.style.display = "flex";
   main[0].appendChild(newTodoItem); // 복사한 노드 붙여넣기
-  // onClickCheckbox();
+  onClickCheckbox();
 });
 
 // 체크 눌렀을 때 취소선 & opacity 0.5로 만들기
 function onClickCheckbox() {
   let $todoItemCheckbox = document.querySelectorAll(".todo-item-checkbox");
-  for (let i = 0; $todoItemCheckbox.length; i++) {
+  for (let i = 0; i < $todoItemCheckbox.length; i++) {
     $todoItemCheckbox[i].addEventListener("click", () => {
       if ($todoItemCheckbox[i].nextElementSibling.style.opacity == "0.5") {
         $todoItemCheckbox[i].nextElementSibling.style.textDecoration = "none";
