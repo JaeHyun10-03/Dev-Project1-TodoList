@@ -24,7 +24,6 @@ function updateDate() {
   );
   $mainDateDays.textContent = calcDays[dayOfWeek];
   $mainDateYearMonthDay.textContent = yearMonthDay;
-  console.log("hello");
 }
 updateDate();
 setInterval(updateDate, 1000); // 1초 마다 날짜를 업데이트함
@@ -71,10 +70,10 @@ function onClickCheckbox() {
 }
 onClickCheckbox();
 
-// 수정 버튼 클릭 시 아이콘 변경 - 미완성
-// 해당 내용 수정하도록 인풋 태그 생성 - 미완성
+// 수정 버튼 클릭 시 아이콘 변경 - 완성
 // 수정 완료 버튼 클릭 시 todo items에 반영 - 미완성
 // 수정 취소 버튼 클릭 시 todo items에 미반영 - 미완성
+// 삭제 버튼 클릭 시 todo item 삭제
 function onClickUpdate() {
   let $todoItemUpdateButton = document.querySelectorAll(
     ".todo-item-update-button"
@@ -84,6 +83,17 @@ function onClickUpdate() {
   );
   for (let i = 0; i < $todoItemUpdateButton.length; i++) {
     $todoItemUpdateButton[i].addEventListener("click", (e) => {
+      let text = "";
+      // 해당 내용 수정하도록 인풋 태그 생성 - 미완성
+      let $oldTodoItem =
+        e.target.parentElement.parentElement.parentElement.childNodes[3];
+      let $editInputText = document.createElement("input");
+      $editInputText.setAttribute("type", "text");
+      $editInputText.setAttribute("value", `${$oldTodoItem.textContent}`);
+      e.target.parentElement.parentElement.parentElement.replaceChild(
+        $editInputText,
+        $oldTodoItem
+      );
       if (e.target.textContent === "edit") {
         e.target.textContent = "Check";
         e.target.parentElement.parentElement.lastElementChild.lastElementChild.textContent =
@@ -92,6 +102,14 @@ function onClickUpdate() {
         e.target.textContent = "edit";
         e.target.parentElement.parentElement.lastElementChild.lastElementChild.textContent =
           "delete";
+        const todoItem = document.getElementsByClassName("main-todo-item");
+        const newTodoItem = todoItem[0].childNodes[3].cloneNode(false);
+        newTodoItem.textContent = $oldTodoItem.value;
+
+        e.target.parentElement.parentElement.parentElement.replaceChild(
+          newTodoItem,
+          $editInputText
+        );
       }
     });
     $todoItemDeleteButton[i].addEventListener("click", (e) => {
@@ -99,26 +117,26 @@ function onClickUpdate() {
         e.target.textContent = "Close";
         e.target.parentElement.parentElement.firstElementChild.firstElementChild.textContent =
           "Check";
+        e.target.parentElement.parentElement.parentElement.remove();
       } else if (e.target.textContent === "Close") {
-        e.target.textContent = "delete";
+        // 수정 취소
+        // <div class="todo-item"> 오늘의 할 일(변경 예정) </div>
+        let $todoItemInput =
+          e.target.parentElement.parentElement.parentElement.childNodes[3];
+        let $newTodoItem = document.createElement("div");
+        $newTodoItem.classList.add("todo-item");
+        $newTodoItem.textContent = $todoItemInput.defaultValue;
+        e.target.parentElement.parentElement.parentElement.replaceChild(
+          $newTodoItem,
+          $todoItemInput
+        );
+
+        // 버튼 텍스트 원래대로 돌리기
         e.target.parentElement.parentElement.firstElementChild.firstElementChild.textContent =
           "edit";
+        e.target.textContent = "delete";
       }
     });
   }
 }
 onClickUpdate();
-
-// 삭제 버튼 클릭 시 todo item 삭제
-
-// 개발자 메모장
-// 앞으로 해야 할 일 저장하는 칸
-/*
-1.
-
-2.
-
-3.
-
-
-*/
