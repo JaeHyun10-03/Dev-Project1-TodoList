@@ -39,13 +39,18 @@ $inputAddButton.addEventListener("click", () => {
   $inputText.value = ""; // 입력창 초기화
 
   // todoItem 태그 복사하기 && 복사한 태그에 입력받은 입력값 대입 && 내용 변경한 태그 todo-items에 삽입
-  const main = document.getElementsByClassName("main-todo-items");
-  const todoItem = document.getElementsByClassName("main-todo-item");
-  const newTodoItem = todoItem[0].cloneNode(true);
-  newTodoItem.childNodes[3].innerText = text; // 복사한 "todo-item"태그에 text를 교체하여 삽입
-  newTodoItem.style.display = "flex";
-  main[0].appendChild(newTodoItem); // 복사한 노드 붙여넣기
-  onClickCheckbox();
+  if (text !== "") {
+    const main = document.getElementsByClassName("main-todo-items");
+    const todoItem = document.getElementsByClassName("main-todo-item");
+    const newTodoItem = todoItem[0].cloneNode(true);
+    newTodoItem.childNodes[3].innerText = text; // 복사한 "todo-item"태그에 text를 교체하여 삽입
+    newTodoItem.style.display = "flex";
+    main[0].appendChild(newTodoItem); // 복사한 노드 붙여넣기
+    onClickCheckbox();
+    onClickUpdate();
+  } else {
+    alert("할 일을 작성 후에 추가 버튼을 클릭해주세요");
+  }
 });
 
 // 체크 눌렀을 때 취소선 & opacity 0.5로 만들기
@@ -70,17 +75,39 @@ onClickCheckbox();
 // 해당 내용 수정하도록 인풋 태그 생성 - 미완성
 // 수정 완료 버튼 클릭 시 todo items에 반영 - 미완성
 // 수정 취소 버튼 클릭 시 todo items에 미반영 - 미완성
-// function onClickUpdate() {
-//   let $todoItemUpdateButton = document.querySelectorAll(
-//     ".todo-item-update-button"
-//   );
-//   for (let i = 0; i < $todoItemUpdateButton.length; i++) {
-//     $todoItemUpdateButton[i].addEventListener("click", (e) => {
-//       console.log(e.target.value);
-//     });
-//   }
-// }
-// onClickUpdate();
+function onClickUpdate() {
+  let $todoItemUpdateButton = document.querySelectorAll(
+    ".todo-item-update-button"
+  );
+  let $todoItemDeleteButton = document.querySelectorAll(
+    ".todo-item-delete-button"
+  );
+  for (let i = 0; i < $todoItemUpdateButton.length; i++) {
+    $todoItemUpdateButton[i].addEventListener("click", (e) => {
+      if (e.target.textContent === "edit") {
+        e.target.textContent = "Check";
+        e.target.parentElement.parentElement.lastElementChild.lastElementChild.textContent =
+          "Close";
+      } else if (e.target.textContent === "Check") {
+        e.target.textContent = "edit";
+        e.target.parentElement.parentElement.lastElementChild.lastElementChild.textContent =
+          "delete";
+      }
+    });
+    $todoItemDeleteButton[i].addEventListener("click", (e) => {
+      if (e.target.textContent === "delete") {
+        e.target.textContent = "Close";
+        e.target.parentElement.parentElement.firstElementChild.firstElementChild.textContent =
+          "Check";
+      } else if (e.target.textContent === "Close") {
+        e.target.textContent = "delete";
+        e.target.parentElement.parentElement.firstElementChild.firstElementChild.textContent =
+          "edit";
+      }
+    });
+  }
+}
+onClickUpdate();
 
 // 삭제 버튼 클릭 시 todo item 삭제
 
